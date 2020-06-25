@@ -12,12 +12,13 @@ import numpy as np
 
 ## Initializing Required Variables
 items = 0
-total = 100
+# Set this to 1 to get all the data from the API
+total = 1000
 
 top_sellers = []
 top_played = []
 platforms = ['win', 'mac', 'linux']
-sleep_time = 2
+sleep_time = 3
 
 tags = set()
 
@@ -26,7 +27,8 @@ while(items < total):
   print("Sending request for ", items, "items")
   data = requests.get("https://store.steampowered.com/contenthub/querypaginated/games/TopSellers/render/", {"query": "", "start": items, "count": 15, "cc": "PK", "l":"english", "v":"4", "tag": ""}).json()
   items += 15
-  # total = data["total_count"]
+  if(total == 1):
+    total = data["total_count"]
   print("Total items:", total)
   soup = BeautifulSoup(data["results_html"], 'html.parser')
   print("Looping anchors")
@@ -64,7 +66,8 @@ while(items < total):
   print("Sending request for ", items, "items")
   data = requests.get("https://store.steampowered.com/contenthub/querypaginated/games/ConcurrentUsers/render/", {"query": "", "start": items, "count": 15, "cc": "PK", "l":"english", "v":"4", "tag": ""}).json()
   items += 15
-  # total = data["total_count"]
+  if(total == 1):
+    total = data["total_count"]
   print("Total items:", total)
   soup = BeautifulSoup(data["results_html"], 'html.parser')
   print("Looping anchors")
